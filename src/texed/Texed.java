@@ -7,6 +7,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import datastructure.LinkedList;
+import datastructure.ListNode;
+
 /**
  * Simple GUI for a text editor.
  *
@@ -85,8 +88,9 @@ public class Texed extends JFrame implements DocumentListener {
 	 * Entry point of the application: starts a GUI
 	 */
 	public static void main(String[] args) {
-		new Texed();
-
+		//new Texed();
+		LinkedList list = new LinkedList<String>(new ListNode<String>("element"));
+		System.out.println("dd");
 	}
 
 }

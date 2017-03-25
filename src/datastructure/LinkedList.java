@@ -39,14 +39,18 @@ public class LinkedList<T> {
 		ListNode<T> addedNode = new ListNode<T>(element);
 		ListNode<T> before = node.getPrev();
 		update(before,addedNode,node);
-		//Controle of node head is en dan eventueel updaten
+		if (node == head){
+			addedNode = head; 
+		}
 	}
 	
 	public void addAfter(ListNode<T> node, T element){
 		ListNode<T> addedNode = new ListNode<T>(element);
 		ListNode<T> after = node.getNext();
 		update(node,addedNode,after);
-		//controle of node tail is en dan eventueel updaten
+		if (node == tail){
+			addedNode = tail;
+		}
 	}
 	
 }

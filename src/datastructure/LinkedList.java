@@ -1,28 +1,54 @@
 package datastructure;
 
+/**
+ * Linked List
+ * @author Theresa Bultinck
+ *
+ * @param <T> type of the parameter
+ */
 public class LinkedList<T> {
 	
 	private ListNode<T> head = null;
 	private ListNode<T> tail = null;
 	private int size = 0;
 	
+	/**
+	 * Constructor for the linked list with one node
+	 * @param node part of the linked list
+	 */
 	public LinkedList(ListNode<T> node){
 		head = tail = node;
 		size++;
 	}
 	
+	/**
+	 * 
+	 * @return true if empty, false if the linked list contains elements
+	 */
 	public boolean isEmpty(){
 		return (size == 0);
 	}
 	
+	/**
+	 * 
+	 * @return the number of elements (nodes) in the list
+	 */
 	public int getSize(){
 		return size;
 	}
 	
+	/**
+	 * 
+	 * @return the head of the list
+	 */
 	public ListNode<T> first(){
 		return head;
 	}
 	
+	/**
+	 * 
+	 * @return the tail of the list
+	 */
 	public ListNode<T> last(){
 		return tail;
 	}

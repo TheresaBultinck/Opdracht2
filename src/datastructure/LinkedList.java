@@ -61,6 +61,7 @@ public class LinkedList<T> {
 		size++;
 	}
 	
+
 	public void addBefore(ListNode<T> node, T element){
 		ListNode<T> addedNode = new ListNode<T>(element);
 		ListNode<T> before = node.getPrev();
@@ -77,6 +78,12 @@ public class LinkedList<T> {
 		if (node == tail){
 			addedNode = tail;
 		}
+	}
+	
+	public void add(T element){
+		ListNode<T> addedNode = new ListNode<T> (element);
+		ListNode<T> beforeTail = tail.getPrev();
+		update(beforeTail,tail,addedNode);
 	}
 
 	private class ListNode<T>{

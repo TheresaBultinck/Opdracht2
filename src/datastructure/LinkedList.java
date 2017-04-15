@@ -21,6 +21,9 @@ public class LinkedList<T> {
 		size++;
 	}
 	
+	/**
+	 * Default constructor
+	 */
 	public LinkedList(){
 	}
 	
@@ -92,6 +95,10 @@ public class LinkedList<T> {
 		}
 	}
 	
+	/**
+	 * Adds an element to the linked list
+	 * @param element
+	 */
 	public void add(T element){
 		ListNode<T> addedNode = new ListNode<T> (element);
 		ListNode<T> beforeTail = tail.getPrev();
@@ -114,14 +121,23 @@ public class LinkedList<T> {
 			element = e;
 		}
 		
+		/**
+		 * @return element
+		 */
 		public T getElement(){
 			return element;
 		}
 		
+		/**
+		 * @return next
+		 */
 		public ListNode<T> getNext(){
 			return next;
 		}
 		
+		/**
+		 * @return prev
+		 */
 		public ListNode<T> getPrev(){
 			return prev;
 		}
@@ -134,10 +150,16 @@ public class LinkedList<T> {
 			prev = p;
 		}
 		
+		/**
+		 * @return true if there is no node next and false if there is a node next
+		 */
 		public boolean hasNext(){
 			return (next == null);
 		}
 		
+		/**
+		 * @return true if there is no node before and false if there is a node before
+		 */
 		public boolean hasPrev(){
 			return (prev == null);
 		}

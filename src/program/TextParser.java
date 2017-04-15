@@ -8,6 +8,10 @@ public class TextParser {
 	private Tag currentTag;
 	private ArrayList<Tag> tags = new ArrayList<>();
 	
+	/**
+	 * Method to parse through a typed String. 
+	 * @param typed
+	 */
 	public void parse(String typed){
 		if (typed.equals("<")) 
 			currentTag = new Tag();

@@ -11,7 +11,12 @@ public class TreeNode<T>{
 		this.element = e;
 	}
 	
-	//duidelijk maken true/false case - gelukt om parent toe te voegen child toevoegen
+	/**
+	 * Adds a child to a linked list of children
+	 * @param child 
+	 * @return true if a parent has been added and thus also a child and 
+	 * false if it failed to add a parent and thus no child
+	 */
 	public boolean addChild(TreeNode<T> child){
 		if (child.addParent(this)){
 			children.add(child);
@@ -20,8 +25,11 @@ public class TreeNode<T>{
 		return false;
 	}
 	
-	//duidelijk true/false uitleggen
-	//als er nog geen parent is true en anders false
+	/**
+	 * Adds a parent
+	 * @param parent
+	 * @return true if there isn't yet a parent and false if there is already a parent present
+	 */
 	public boolean addParent(TreeNode<T> parent){
 		if(this.isRoot()){
 			this.parent = parent;
@@ -30,6 +38,10 @@ public class TreeNode<T>{
 		return false;
 	}
 	
+	/**
+	 * Check if there is a parent
+	 * @return true if there is no parent and false if there is already a parent
+	 */
 	public boolean isRoot(){
 		return parent == null;
 	}

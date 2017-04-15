@@ -6,7 +6,7 @@ public class Tag {
 	private boolean isOpen = true;
 	
 	/**
-	 * If it is an opening tag (<), isOpen is set to true and if it is an closing tag (>) 
+	 * If it is an opening tag ('<'), isOpen is set to true and if it is an closing tag ('>') 
 	 * isOpen is set to false. 
 	 */
 	public void close() {

@@ -64,7 +64,11 @@ public class LinkedList<T> {
 		size++;
 	}
 	
-
+	/**
+	 * Adds an element before a ListNode node
+	 * @param node
+	 * @param element
+	 */
 	public void addBefore(ListNode<T> node, T element){
 		ListNode<T> addedNode = new ListNode<T>(element);
 		ListNode<T> before = node.getPrev();
@@ -74,6 +78,11 @@ public class LinkedList<T> {
 		}
 	}
 	
+	/**
+	 * Adds an element after a ListNode node
+	 * @param node
+	 * @param element
+	 */
 	public void addAfter(ListNode<T> node, T element){
 		ListNode<T> addedNode = new ListNode<T>(element);
 		ListNode<T> after = node.getNext();

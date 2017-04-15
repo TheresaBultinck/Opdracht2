@@ -6,9 +6,11 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.BadLocationException;
 
-import datastructure.LinkedList;
-import datastructure.ListNode;
+import program.TextParser;
+
+
 
 /**
  * Simple GUI for a text editor.
@@ -16,7 +18,7 @@ import datastructure.ListNode;
  */
 public class Texed extends JFrame implements DocumentListener {
 	private JTextArea textArea;
-
+	private TextParser parser;
 	private static final long serialVersionUID = 5514566716849599754L;
 	/**
 	 * Constructs a new GUI: A TextArea on a ScrollPane
@@ -24,7 +26,7 @@ public class Texed extends JFrame implements DocumentListener {
 	public Texed() {
 		super();
 		setTitle("Texed: simple text editor");
-		setBounds(800, 800, 600, 600);
+		setBounds(0, 0, 600, 600);
 		textArea = new JTextArea(30, 80);
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
@@ -35,19 +37,22 @@ public class Texed extends JFrame implements DocumentListener {
 		JScrollPane scrollPane = new JScrollPane(textArea);
 		add(scrollPane);
 		setVisible(true);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);		
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		parser = new TextParser();
 	}
 
 	/**
 	 * Callback when changing an element
 	 */
 	public void changedUpdate(DocumentEvent ev) {
+		System.out.println("chqnge");
 	}
 
 	/**
 	 * Callback when deleting an element
 	 */
 	public void removeUpdate(DocumentEvent ev) {
+		System.out.println("remove");
 	}
 
 	/**
@@ -56,9 +61,16 @@ public class Texed extends JFrame implements DocumentListener {
 	public void insertUpdate(DocumentEvent ev) {
 		//Check if the change is only a single character, otherwise return so it does not go in an infinite loop
 		if(ev.getLength() != 1) return;
-		
+		try {
+			String typed = ev.getDocument().getText(ev.getOffset(), 1);
+			parser.parse(typed);
+		} catch (BadLocationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// In the callback you cannot change UI elements, you need to start a new Runnable
-		SwingUtilities.invokeLater(new Task("foo"));
+		//SwingUtilities.invokeLater(new Task("foo"));
+		
 	}
 
 	/**
@@ -88,9 +100,7 @@ public class Texed extends JFrame implements DocumentListener {
 	 * Entry point of the application: starts a GUI
 	 */
 	public static void main(String[] args) {
-		//new Texed();
-		LinkedList list = new LinkedList<String>(new ListNode<String>("element"));
-		System.out.println("dd");
+		new Texed();
 	}
 
 }

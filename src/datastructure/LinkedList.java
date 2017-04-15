@@ -21,6 +21,9 @@ public class LinkedList<T> {
 		size++;
 	}
 	
+	public LinkedList(){
+	}
+	
 	/**
 	 * 
 	 * @return true if empty, false if the linked list contains elements
@@ -131,6 +134,4 @@ public class LinkedList<T> {
 		}
 		
 	}
-
-	
 }

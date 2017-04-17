@@ -1,5 +1,7 @@
 package texed;
 
+import java.awt.Color;
+
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -7,7 +9,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
-
+import datastructure.LinkedList;
+import program.Status;
 import program.TextParser;
 
 
@@ -27,7 +30,7 @@ public class Texed extends JFrame implements DocumentListener {
 		super();
 		setTitle("Texed: simple text editor");
 		setBounds(0, 0, 600, 600);
-		textArea = new JTextArea(30, 80);
+		textArea = new JTextArea(30,80);
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
 		
@@ -52,7 +55,7 @@ public class Texed extends JFrame implements DocumentListener {
 	 * Callback when deleting an element
 	 */
 	public void removeUpdate(DocumentEvent ev) {
-		System.out.println("remove");
+		parser.remove(ev.getOffset());
 	}
 
 	/**
@@ -62,8 +65,14 @@ public class Texed extends JFrame implements DocumentListener {
 		//Check if the change is only a single character, otherwise return so it does not go in an infinite loop
 		if(ev.getLength() != 1) return;
 		try {
-			String typed = ev.getDocument().getText(ev.getOffset(), 1);
-			parser.parse(typed);
+			int offset = ev.getOffset();
+			String typed = ev.getDocument().getText(offset, 1);
+			if(Status.ERROR == parser.parse(typed,offset)) {
+				System.out.println("error");
+				this.textArea.setForeground(Color.RED);
+				this.textArea.revalidate();
+				this.textArea.repaint();
+			}
 		} catch (BadLocationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

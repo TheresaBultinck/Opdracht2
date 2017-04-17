@@ -47,23 +47,25 @@ public class LinkedList<T> {
 	 * 
 	 * @return the head of the list
 	 */
-	public ListNode<T> first(){
-		return head;
+	public T first(){
+		return head.getElement();
 	}
 	
 	/**
 	 * 
 	 * @return the tail of the list
 	 */
-	public ListNode<T> last(){
-		return tail;
+	public T last(){
+		return tail.getElement();
 	}
 	
 	private void update(ListNode<T> first,ListNode<T> second, ListNode<T> third){
-		first.setNext(second);
+		if (first != null)
+			first.setNext(second);
 		second.setPrev(first);
 		second.setNext(third);
-		third.setPrev(second);
+		if (third != null)
+			third.setPrev(second);
 		size++;
 	}
 	
@@ -77,7 +79,7 @@ public class LinkedList<T> {
 		ListNode<T> before = node.getPrev();
 		update(before,addedNode,node);
 		if (node == head){
-			addedNode = head; 
+			this.head = addedNode; 
 		}
 	}
 	
@@ -91,18 +93,39 @@ public class LinkedList<T> {
 		ListNode<T> after = node.getNext();
 		update(node,addedNode,after);
 		if (node == tail){
-			addedNode = tail;
+			this.tail = addedNode;
 		}
 	}
 	
 	/**
-	 * Adds an element to the linked list
+	 * Adds an element to the linked list at the end of the list?
 	 * @param element
 	 */
 	public void add(T element){
-		ListNode<T> addedNode = new ListNode<T> (element);
-		ListNode<T> beforeTail = tail.getPrev();
-		update(beforeTail,tail,addedNode);
+		if (size == 0){
+			ListNode<T> addedNode = new ListNode<T> (element);
+			head = tail = addedNode; 
+			size++;
+		}
+		else {
+			addAfter(tail, element);
+			//ListNode<T> beforeTail = tail.getPrev();
+			//update(beforeTail,tail,addedNode);
+		}
+	}
+	
+	@Override
+	public String toString(){
+		if(size < 1) {
+			return "[]";
+		}
+		ListNode<T> currentNode = head;
+		String result = "[";
+		while(!currentNode.equals(tail)){
+			result += currentNode.toString() + ",";
+		}
+		result += "]";
+		return result;
 	}
 
 	private class ListNode<T>{
@@ -164,5 +187,8 @@ public class LinkedList<T> {
 			return (prev == null);
 		}
 		
+		public String toString(){
+			return element.toString();
+		}
 	}
 }

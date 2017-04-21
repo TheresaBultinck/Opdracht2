@@ -111,8 +111,6 @@ public class LinkedList<T> implements Iterable<T> {
 		}
 		else {
 			addAfter(tail, element);
-			//ListNode<T> beforeTail = tail.getPrev();
-			//update(beforeTail,tail,addedNode);
 		}
 	}
 	
@@ -131,6 +129,12 @@ public class LinkedList<T> implements Iterable<T> {
 		return result;
 	}
 
+	/**
+	 * ListNodes to construct the linked List with.
+	 * @author Theresa Bultinck
+	 *
+	 * @param <T>
+	 */
 	@SuppressWarnings("hiding")
 	private class ListNode<T>{
 		
@@ -170,10 +174,18 @@ public class LinkedList<T> implements Iterable<T> {
 			return prev;
 		}
 		
+		/**
+		 * Changes the next ListNode. 
+		 * @param n
+		 */
 		public void setNext(ListNode<T> n){
 			next = n;
 		}
 		
+		/**
+		 * Sets the previous ListNode.
+		 * @param p
+		 */
 		public void setPrev(ListNode<T> p){
 			prev = p;
 		}
@@ -202,6 +214,13 @@ public class LinkedList<T> implements Iterable<T> {
 	public Iterator<T> iterator(){
 		return new LinkedListIterator<T>(this);
 	}
+	
+	/**
+	 * Constructs an iterator to iterate through the Linked List.
+	 * @author Theresa Bultinck
+	 *
+	 * @param <T>
+	 */
 	@SuppressWarnings("hiding")
 	public class LinkedListIterator<T> implements Iterator<T>{
 		private LinkedList<T>.ListNode<T> current;

@@ -6,66 +6,81 @@ import datastructure.Tree.TreeNode;
 
 public class TextParser {
 	
-	private String bufferText = "";
-	private String fullText = "";
-	private Tag currentTag;
-	private Tree<Tag> tagTree = new Tree<Tag>();
-	private TreeNode currentParent = null;
-	private Status currentStatus = Status.OK;
-	private int currentPosition = 0;
+	private Tree<Tag> tagTree;
+	private Tree<Tag>.TreeNode<Tag> currentParent = null;
 	
+	public LinkedList<AbstractStatus> parse(String text){
+		tagTree = new Tree<>();
+		currentParent = null;
+		return parse(text, 0, new LinkedList<AbstractStatus>());
+	}
 	/**
 	 * Method to parse through a typed String. 
 	 * @param typed
 	 */
-	public Status parse(String typed,int offset){
-		if (typed.equals("<")) 
-			currentTag = new Tag(offset);
-		else if (typed.equals("\\")) {
-			currentTag.close();
-		}
-		else if (typed.equals(">")) {
-			currentTag.setName(bufferText);		
-			addToTree();
-			currentTag = null;
-			bufferText = "";
-		}
-		else if(currentTag != null)
-			bufferText += typed;
+	private LinkedList<AbstractStatus> parse(String subs, int offset,LinkedList<AbstractStatus> stati) {
 		
-		fullText += typed;
-		currentPosition = offset;
-		return currentStatus;
+		int startIndex = subs.indexOf("<", 0);
+		int endIndex = subs.indexOf(">",0);
 		
-	}
-	
-	 
-	
-	private void addToTree() {
-		if(!tagTree.hasRoot() && currentTag.isOpen()) {
-			currentParent = tagTree.setRoot(currentTag);
+		if (startIndex < 0 && endIndex < 0){
+			return stati; 
 		}
-		else if (currentTag.isOpen()) {
-			currentParent = currentParent.addChild(currentTag);
+		else if (startIndex < 0){
+			stati.add(new AbstractStatus(offset, StatusProperty.ERROR));
+			return stati;
 		}
-		else if (currentTag.isClose() && currentTag.equals(currentParent.getElement())){
-			currentParent = currentParent.getParent(); 
+		else if (endIndex < 0) {
+			stati.add(new AbstractStatus(offset, StatusProperty.ERROR));
+			return stati;
+		}
+		else if (endIndex < startIndex ){
+			stati.add(new AbstractStatus(offset, StatusProperty.ERROR));
+			return stati;
 		}
 		else {
-			currentStatus = Status.ERROR;
+			Tag tag = new Tag();
+			if (subs.substring(startIndex+1, startIndex+2).equals("/")){
+				tag.setOffset(startIndex+offset+1);
+				tag.setName(subs.substring(startIndex+2,endIndex));
+				tag.close();
+			}
+			else {
+				tag.setOffset(startIndex+offset+1);
+				tag.setName(subs.substring(startIndex+1, endIndex));
+			}
+			AbstractStatus status = addToTree(tag);
+			if (StatusProperty.ERROR == status.getStatusProperty()) {
+				stati.add(status);
+			}
+			return parse(subs.substring(endIndex+1),offset+endIndex+1, stati);
 		}
 	}
+	
+	private AbstractStatus addToTree(Tag t) {
+		if(!tagTree.hasRoot() && t.isOpen()) {
+			this.currentParent = tagTree.setRoot(t);
+		}
+		else if (tagTree.hasRoot() && this.currentParent == null) {
+			return new Status(t, StatusProperty.ERROR);
+		}
+		else if (t.isOpen()){
+			this.currentParent = currentParent.addChild(t); 
+		}
+		else if (t.isClose() && t.equals(currentParent.getElement()) {
+			this.currentParent = currentParent.getParent();
+		}
+		else {
+			return new Status(t, StatusProperty.ERROR);
+		}
+		return new Status(t, StatusProperty.OK);
+	}
 
-
-
-	public void remove(int offset) {
-		String removed = fullText.substring(offset, offset+1);
-		fullText = fullText.substring(0,offset) + fullText.substring(offset+1,fullText.length());
-		
-		if(removed.equals(">") && currentPosition == offset)
-			currentStatus = Status.OK; 
-		//if (currentStatus == Status.OK)
-			//bufferText
-		
+	public Tag getParent(){
+		return currentParent.getElement();
+	}
+	
+	public boolean hasParent(){
+		return currentParent != null;
 	}
 }

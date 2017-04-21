@@ -2,13 +2,9 @@ package program;
 
 import javax.swing.text.Style;
 
-public enum Status {
+public enum StatusProperty {
 
 	ERROR(),
 	OK();
-	
-	
-	Status() {
-	}
-	
+
 }

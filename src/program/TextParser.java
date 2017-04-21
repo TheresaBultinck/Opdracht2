@@ -64,8 +64,8 @@ public class TextParser {
 		
 		if(removed.equals(">") && currentPosition == offset)
 			currentStatus = Status.OK; 
-		if (currentStatus == Status.OK)
-			bufferText.re
+		//if (currentStatus == Status.OK)
+			//bufferText
 		
 	}
 }

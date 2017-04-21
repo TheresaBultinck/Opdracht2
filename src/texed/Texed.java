@@ -9,6 +9,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Highlighter;
+
 import datastructure.LinkedList;
 import program.Status;
 import program.TextParser;
@@ -23,6 +26,9 @@ public class Texed extends JFrame implements DocumentListener {
 	private JTextArea textArea;
 	private TextParser parser;
 	private static final long serialVersionUID = 5514566716849599754L;
+	final Highlighter hilit; 
+	final Highlighter.HighlightPainter painter;
+	
 	/**
 	 * Constructs a new GUI: A TextArea on a ScrollPane
 	 */
@@ -42,6 +48,10 @@ public class Texed extends JFrame implements DocumentListener {
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		parser = new TextParser();
+		
+		hilit = new DefaultHighlighter();
+		painter = new DefaultHighlighter.DefaultHighlightPainter(Color.RED);
+		textArea.setHighlighter(hilit);
 	}
 
 	/**
@@ -55,37 +65,56 @@ public class Texed extends JFrame implements DocumentListener {
 	 * Callback when deleting an element
 	 */
 	public void removeUpdate(DocumentEvent ev) {
-		parser.remove(ev.getOffset());
+		try {
+			System.out.println("Removed");
+			String changed = ev.getDocument().getText(ev.getLength(), ev.getOffset());
+			System.out.println("Changed");
+			check(ev, changed);
+		} catch (BadLocationException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
 	 * Callback when inserting an element
 	 */
 	public void insertUpdate(DocumentEvent ev) {
-		//Check if the change is only a single character, otherwise return so it does not go in an infinite loop
-		if(ev.getLength() != 1) return;
 		try {
-			int offset = ev.getOffset();
-			String typed = ev.getDocument().getText(offset, 1);
-			if(Status.ERROR == parser.parse(typed,offset)) {
-				System.out.println("error");
-				this.textArea.setForeground(Color.RED);
-				this.textArea.revalidate();
-				this.textArea.repaint();
-			}
+			String changed = ev.getDocument().getText(ev.getOffset(), ev.getLength());
+			check(ev, changed);
 		} catch (BadLocationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// In the callback you cannot change UI elements, you need to start a new Runnable
-		//SwingUtilities.invokeLater(new Task("foo"));
-		
+	}
+	
+	private void check(DocumentEvent ev, String typed) throws BadLocationException {
+		//Evaluate only on >
+		if (typed.equals(">")|| ev.getLength() > 1) {
+			System.out.println("Check");
+			highlight(parser.parse(ev.getDocument().getText(0, ev.getDocument().getLength()));
+		}
+		//Auto complete
+		else if (typed.equals("<")) {
+			if (parser.hasParent()){
+				System.out.println(parser.getParent().getName());
+				SwingUtilities.invokeLater(new CompletionTask("/" + parser.getParent().getName() + ">",ev.getOffset()+1));
+			}
+		}
+	}
+	
+	private void highlight (LinkedList<AbstractStatus> status) throws BadLocationException {
+		hilit.removeAllHighlights();
+		for (AbstractStatus s : status){
+			System.out.println(s);
+			hilit.addHighlight(s.getStartPosition(), s.getEndPosition(), painter);
+		}
 	}
 
 	/**
 	 * Runnable: change UI elements as a result of a callback
 	 * Start a new Task by invoking it through SwingUtilities.invokeLater
 	 */
+	@SuppressWarnings("unused")
 	private class Task implements Runnable {
 		private String text;
 		
@@ -105,6 +134,21 @@ public class Texed extends JFrame implements DocumentListener {
 		}
 	}
 
+	private class CompletionTask implements Runnable {
+		String completion;
+		int position;
+		
+		CompletionTask(String completion, int position){
+			this.completion = completion;
+			this.position = position;
+		}
+		
+		public void run(){
+			textArea.insert(completion, position);
+			textArea.setCaretPosition(position + completion.length());
+			textArea.moveCaretPosition(position);
+		}
+	}
 	/**
 	 * Entry point of the application: starts a GUI
 	 */

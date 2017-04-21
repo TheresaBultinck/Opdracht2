@@ -1,6 +1,7 @@
 package program;
 
 
+import datastructure.LinkedList;
 import datastructure.Tree;
 import datastructure.Tree.TreeNode;
 
@@ -67,7 +68,7 @@ public class TextParser {
 		else if (t.isOpen()){
 			this.currentParent = currentParent.addChild(t); 
 		}
-		else if (t.isClose() && t.equals(currentParent.getElement()) {
+		else if (t.isClose() && t.equals(currentParent.getElement())){
 			this.currentParent = currentParent.getParent();
 		}
 		else {

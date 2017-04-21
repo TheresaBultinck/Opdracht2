@@ -10,6 +10,10 @@ public class Tag {
 		this.offset = offset;
 	}
 	
+	public Tag(){
+		this.offset = 0;
+	}
+	
 	/**
 	 * If it is an opening tag ('<'), isOpen is set to true and if it is an closing tag ('<\') 
 	 * isOpen is set to false. 
@@ -34,6 +38,18 @@ public class Tag {
 		return name;
 	}
 	
+	public int getLength(){
+		return this.name.length()+2;
+	}
+	
+	public int getStartPosition(){
+		return offset; 
+	}
+	
+	public int getEndPosition(){
+		return offset+getLength();
+	}
+	
 	@Override
 	public String toString() {
 		return isOpen ? "Open: " + name : "Close: " + name;
@@ -44,4 +60,7 @@ public class Tag {
 		return ((Tag)t).getName().equals(name);
 	}
 	
+	public void setOffset(int i){
+		this.offset = i;
+	}
 }

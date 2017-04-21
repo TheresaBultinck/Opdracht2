@@ -27,6 +27,7 @@ public class Tree<T> {
 	}
 	
 	//Interface: ooit een element van maken? 
+	@SuppressWarnings("hiding")
 	public class TreeNode<T>{
 		
 		private TreeNode<T> parent = null; 

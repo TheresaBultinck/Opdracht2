@@ -13,6 +13,7 @@ import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 
 import datastructure.LinkedList;
+import program.AbstractStatus;
 import program.Status;
 import program.TextParser;
 
@@ -91,7 +92,7 @@ public class Texed extends JFrame implements DocumentListener {
 		//Evaluate only on >
 		if (typed.equals(">")|| ev.getLength() > 1) {
 			System.out.println("Check");
-			highlight(parser.parse(ev.getDocument().getText(0, ev.getDocument().getLength()));
+			highlight(parser.parse(ev.getDocument().getText(0, ev.getDocument().getLength())));
 		}
 		//Auto complete
 		else if (typed.equals("<")) {

@@ -1,12 +1,14 @@
 package datastructure;
 
+import java.util.Iterator;
+
 /**
  * Linked List
  * @author Theresa Bultinck
  *
  * @param <T> type of the parameter
  */
-public class LinkedList<T> {
+public class LinkedList<T> implements Iterable<T> {
 	
 	private ListNode<T> head = null;
 	private ListNode<T> tail = null;
@@ -121,19 +123,22 @@ public class LinkedList<T> {
 		}
 		ListNode<T> currentNode = head;
 		String result = "[";
-		while(!currentNode.equals(tail)){
+		while(currentNode.hasNext()){
 			result += currentNode.toString() + ",";
+			currentNode = currentNode.getNext();
 		}
-		result += "]";
+		result += currentNode.toString() +  "]";
 		return result;
 	}
 
+	@SuppressWarnings("hiding")
 	private class ListNode<T>{
 		
 		private T element;
 		private ListNode<T> next;
 		private ListNode<T> prev;
 		
+		@SuppressWarnings("unused")
 		public ListNode(T e, ListNode<T> n, ListNode<T> p){
 			element = e;
 			next = n;
@@ -177,18 +182,44 @@ public class LinkedList<T> {
 		 * @return true if there is no node next and false if there is a node next
 		 */
 		public boolean hasNext(){
-			return (next == null);
+			return (next != null);
 		}
 		
 		/**
 		 * @return true if there is no node before and false if there is a node before
 		 */
+		@SuppressWarnings("unused")
 		public boolean hasPrev(){
-			return (prev == null);
+			return (prev != null);
 		}
 		
 		public String toString(){
 			return element.toString();
+		}
+	}
+	
+	@Override
+	public Iterator<T> iterator(){
+		return new LinkedListIterator<T>(this);
+	}
+	@SuppressWarnings("hiding")
+	public class LinkedListIterator<T> implements Iterator<T>{
+		private LinkedList<T>.ListNode<T> current;
+		
+		public LinkedListIterator(LinkedList<T> linkedList){
+			this.current = linkedList.head;
+		}
+		
+		@Override
+		public boolean hasNext(){
+			return current != null;
+		}
+		
+		@Override
+		public T next(){
+			T element = current.getElement();
+			current = current.getNext();
+			return element;
 		}
 	}
 }

@@ -8,16 +8,17 @@ public class TextParser {
 	private Tree<Tag> tagTree;
 	private Tree<Tag>.TreeNode<Tag> currentParent = null;
 	
+	/**
+	 * Method to parse through a given String
+	 * @param text
+	 * @return linkedList of AbstractStatus
+	 */
 	public LinkedList<AbstractStatus> parse(String text){
 		tagTree = new Tree<>();
 		currentParent = null;
 		return parse(text, 0, new LinkedList<AbstractStatus>());
 	}
-	
-	/**
-	 * Method to parse through a typed String. 
-	 * @param typed
-	 */
+
 	private LinkedList<AbstractStatus> parse(String subs, int offset,LinkedList<AbstractStatus> stati) {
 		
 		int startIndex = subs.indexOf("<", 0);
@@ -52,6 +53,11 @@ public class TextParser {
 		}
 	}
 	
+	/**
+	 * Adds a tag to the tree.
+	 * @param t
+	 * @return abstractstatus
+	 */
 	private AbstractStatus addToTree(Tag t) {
 		if(!tagTree.hasRoot() && t.isOpen()) {
 			this.currentParent = tagTree.setRoot(t);

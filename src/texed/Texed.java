@@ -71,6 +71,9 @@ public class Texed extends JFrame implements DocumentListener, ActionListener {
 		textArea.setHighlighter(hilit);
 	}
 	
+	/**
+	 * Constructs a new MenuBar for the Do/Undo items. 
+	 */
 	public void createMenu(){
 		menuBar = new JMenuBar();
 		
@@ -144,6 +147,12 @@ public class Texed extends JFrame implements DocumentListener, ActionListener {
 		}
 	}
 	
+	/**
+	 * Check if the tags are correctly opened and closed.
+	 * @param ev
+	 * @param typed
+	 * @throws BadLocationException
+	 */
 	private void check(DocumentEvent ev, String typed) throws BadLocationException {
 		//Evaluate only on >
 		if (typed.equals(">")|| ev.getLength() > 1) {
@@ -158,6 +167,12 @@ public class Texed extends JFrame implements DocumentListener, ActionListener {
 		}
 	}
 	
+	/**
+	 * Highlights the mistakes you made in the code you've typed. For example: if you forgot to close
+	 * the body tag and already closed the html.
+	 * @param status
+	 * @throws BadLocationException
+	 */
 	private void highlight (LinkedList<AbstractStatus> status) throws BadLocationException {
 		hilit.removeAllHighlights();
 		for (AbstractStatus s : status){
@@ -168,7 +183,6 @@ public class Texed extends JFrame implements DocumentListener, ActionListener {
 
 	/**
 	 * Runnable: change UI elements as a result of a callback
-	 * Start a new Task by invoking it through SwingUtilities.invokeLater
 	 */
 	
 	private class CompletionTask implements Runnable {

@@ -3,6 +3,11 @@ package program;
 import datastructure.LinkedList;
 import datastructure.Tree;
 
+/**
+ * Parse through the text in the texteditor.
+ * @author Theresa Bultinck
+ *
+ */
 public class TextParser {
 	
 	private Tree<Tag> tagTree;

@@ -1,5 +1,10 @@
 package program;
 
+/**
+ * Class that gives the position of the error 
+ * @author Theresa Bultinck
+ *
+ */
 public class AbstractStatus {
 	
 	private StatusProperty prop;

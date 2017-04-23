@@ -2,7 +2,7 @@ package command;
 
 /**
  * Interface for the implementation of the undo and redo button.
- * @author Theresa
+ * @author Theresa Bultinck
  *
  */
 public interface Command {

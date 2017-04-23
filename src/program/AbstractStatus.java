@@ -15,7 +15,7 @@ public class AbstractStatus {
 	}
 	
 	public int getEndPosition(){
-		return position+2;
+		return position + 2;
 	}
 	
 	public StatusProperty getStatusProperty(){

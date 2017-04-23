@@ -115,7 +115,8 @@ public class Tree<T> {
 			if (parent == null){
 				return "Node: " + element.toString() + "with children" + children.toString();
 			}
-			return "Node: " + element.toString() + "with children" + children.toString() + "parent: " + parent.toString();
+			return "Node: " + element.toString() + "with children" + children.toString() + "parent: " 
+				+ parent.toString();
  		}
 	}
 }

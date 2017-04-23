@@ -1,10 +1,17 @@
 package texed;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -12,23 +19,28 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 
+import command.CommandStack;
+import command.TypeCommand;
 import datastructure.LinkedList;
 import program.AbstractStatus;
-import program.Status;
 import program.TextParser;
-
-
 
 /**
  * Simple GUI for a text editor.
  *
  */
-public class Texed extends JFrame implements DocumentListener {
+public class Texed extends JFrame implements DocumentListener, ActionListener {
 	private JTextArea textArea;
 	private TextParser parser;
 	private static final long serialVersionUID = 5514566716849599754L;
 	final Highlighter hilit; 
 	final Highlighter.HighlightPainter painter;
+	private JMenuBar menuBar;
+	private JMenu menu;
+	private JMenuItem menuItemDo, menuItemUndo;
+	private CommandStack commands;
+	private String text;
+	private boolean ignore = false;
 	
 	/**
 	 * Constructs a new GUI: A TextArea on a ScrollPane
@@ -40,6 +52,11 @@ public class Texed extends JFrame implements DocumentListener {
 		textArea = new JTextArea(30,80);
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
+		
+		//undo-redo command stack
+		commands = new CommandStack();
+		
+		createMenu();
 		
 		//Registration of the callback
 		textArea.getDocument().addDocumentListener(this);
@@ -54,12 +71,44 @@ public class Texed extends JFrame implements DocumentListener {
 		painter = new DefaultHighlighter.DefaultHighlightPainter(Color.RED);
 		textArea.setHighlighter(hilit);
 	}
+	
+	public void createMenu(){
+		menuBar = new JMenuBar();
+		
+		menu = new JMenu("Do/Undo menu");
+		menu.setMnemonic(KeyEvent.VK_A);
+		menuBar.add(menu);
+		
+		menuItemUndo = new JMenuItem("Undo", KeyEvent.VK_T);
+		menuItemUndo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.CTRL_MASK));
+		menuItemUndo.addActionListener(this);
+		menu.add(menuItemUndo);
+		
+		menuItemDo = new JMenuItem("Do", KeyEvent.VK_T);
+		menuItemDo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK));
+		menuItemDo.addActionListener(this);
+		menu.add(menuItemDo);
+		
+		this.setJMenuBar(this.menuBar);
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent ev){
+		Object source = ev.getSource();
+		if (source.equals(menuItemDo)){
+			ignore = true;
+			commands.redo();
+		} else if (source.equals(menuItemUndo)) {
+			ignore = true; 
+			commands.undo();
+		}
+	}
 
 	/**
 	 * Callback when changing an element
 	 */
 	public void changedUpdate(DocumentEvent ev) {
-		System.out.println("chqnge");
+		//do nothing
 	}
 
 	/**
@@ -67,9 +116,12 @@ public class Texed extends JFrame implements DocumentListener {
 	 */
 	public void removeUpdate(DocumentEvent ev) {
 		try {
-			System.out.println("Removed");
-			String changed = ev.getDocument().getText(ev.getLength(), ev.getOffset());
-			System.out.println("Changed");
+			String changed = text.substring(ev.getOffset(), ev.getOffset() + ev.getLength());
+			if (!ignore){
+				commands.doCommand(new TypeCommand(text, textArea.getText(), textArea));
+				ignore = false;
+			}
+			text = textArea.getText();
 			check(ev, changed);
 		} catch (BadLocationException e) {
 			e.printStackTrace();
@@ -82,6 +134,11 @@ public class Texed extends JFrame implements DocumentListener {
 	public void insertUpdate(DocumentEvent ev) {
 		try {
 			String changed = ev.getDocument().getText(ev.getOffset(), ev.getLength());
+			if (!ignore) {
+				commands.doCommand(new TypeCommand(text, textArea.getText(), textArea));
+				ignore = false;
+			}
+			this.text = textArea.getText();
 			check(ev, changed);
 		} catch (BadLocationException e) {
 			e.printStackTrace();
@@ -91,14 +148,13 @@ public class Texed extends JFrame implements DocumentListener {
 	private void check(DocumentEvent ev, String typed) throws BadLocationException {
 		//Evaluate only on >
 		if (typed.equals(">")|| ev.getLength() > 1) {
-			System.out.println("Check");
 			highlight(parser.parse(ev.getDocument().getText(0, ev.getDocument().getLength())));
 		}
 		//Auto complete
 		else if (typed.equals("<")) {
 			if (parser.hasParent()){
-				System.out.println(parser.getParent().getName());
-				SwingUtilities.invokeLater(new CompletionTask("/" + parser.getParent().getName() + ">",ev.getOffset()+1));
+				SwingUtilities
+					.invokeLater(new CompletionTask("/" + parser.getParent().getName() + ">",ev.getOffset() + 1));
 			}
 		}
 	}
@@ -115,26 +171,7 @@ public class Texed extends JFrame implements DocumentListener {
 	 * Runnable: change UI elements as a result of a callback
 	 * Start a new Task by invoking it through SwingUtilities.invokeLater
 	 */
-	@SuppressWarnings("unused")
-	private class Task implements Runnable {
-		private String text;
-		
-		/**
-		 * Pass parameters in the Runnable constructor to pass data from the callback 
-		 * @param text which will be appended with every character
-		 */
-		Task(String text) {
-			this.text = text;
-		}
-
-		/**
-		 * The entry point of the runnable
-		 */
-		public void run() {
-			textArea.append(text);
-		}
-	}
-
+	
 	private class CompletionTask implements Runnable {
 		String completion;
 		int position;

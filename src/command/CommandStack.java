@@ -5,38 +5,31 @@ import datastructure.LinkedList;
 public class CommandStack {
 	
 	private LinkedList<Command> commands = new LinkedList<>();
-	private int nextPointer = 0;
+	private LinkedList<Command>.ListNode<Command> pointer;
 	
 	public void doCommand(Command command) {
-		nextPointer++;
-		
-		commands.add(command);
-		
-		command.execute();
+		pointer = commands.add(command);
 	}
 
-	
 	public boolean canUndo() {
-		return nextPointer > 0;
+		return !commands.isEmpty() && pointer != null;
 	}
 	
 	public void undo() {
 		if(canUndo()) {
-			Command undoCommand = commands.last();
-			
-			
-			undoCommand.undo();
+			pointer.getElement().undo();
+			pointer = pointer.getPrev();
 		}
 	}
 	
 	public boolean canRedo() {
-		return nextPointer < commands.getSize();
+		return !commands.isEmpty() && (pointer == null || pointer.hasNext());
 	}
 	
 	public void redo() {
 		if(canRedo()) {
-			
+			pointer = pointer == null ? commands.head() : pointer.getNext();
+			pointer.getElement().redo();
 		}
 	}
-	
 }

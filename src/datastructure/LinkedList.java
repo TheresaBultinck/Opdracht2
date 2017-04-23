@@ -61,6 +61,14 @@ public class LinkedList<T> implements Iterable<T> {
 		return tail.getElement();
 	}
 	
+	public LinkedList<T>.ListNode<T> head(){
+		return this.head;
+	}
+	
+	public LinkedList<T>.ListNode<T> tail(){
+		return this.tail;
+	}
+	
 	private void update(ListNode<T> first,ListNode<T> second, ListNode<T> third){
 		if (first != null)
 			first.setNext(second);
@@ -76,13 +84,14 @@ public class LinkedList<T> implements Iterable<T> {
 	 * @param node
 	 * @param element
 	 */
-	public void addBefore(ListNode<T> node, T element){
+	public ListNode<T> addBefore(ListNode<T> node, T element){
 		ListNode<T> addedNode = new ListNode<T>(element);
 		ListNode<T> before = node.getPrev();
 		update(before,addedNode,node);
 		if (node == head){
 			this.head = addedNode; 
 		}
+		return addedNode;
 	}
 	
 	/**
@@ -90,28 +99,29 @@ public class LinkedList<T> implements Iterable<T> {
 	 * @param node
 	 * @param element
 	 */
-	public void addAfter(ListNode<T> node, T element){
+	public ListNode<T> addAfter(ListNode<T> node, T element){
 		ListNode<T> addedNode = new ListNode<T>(element);
 		ListNode<T> after = node.getNext();
 		update(node,addedNode,after);
 		if (node == tail){
 			this.tail = addedNode;
 		}
+		return addedNode;
 	}
 	
 	/**
 	 * Adds an element to the linked list at the end of the list?
 	 * @param element
 	 */
-	public void add(T element){
+	public ListNode<T> add(T element){
+		ListNode<T> addedNode = new ListNode<T>(element);
 		if (size == 0){
-			ListNode<T> addedNode = new ListNode<T> (element);
 			head = tail = addedNode; 
 			size++;
-		}
-		else {
+		} else {
 			addAfter(tail, element);
 		}
+		return addedNode;
 	}
 	
 	@Override
@@ -135,8 +145,8 @@ public class LinkedList<T> implements Iterable<T> {
 	 *
 	 * @param <T>
 	 */
-	@SuppressWarnings("hiding")
-	private class ListNode<T>{
+
+	public class ListNode<T>{
 		
 		private T element;
 		private ListNode<T> next;

@@ -39,7 +39,7 @@ public class Tag {
 	}
 	
 	public int getLength(){
-		return this.name.length()+2;
+		return this.name.length() + 2;
 	}
 	
 	public int getStartPosition(){
@@ -47,12 +47,12 @@ public class Tag {
 	}
 	
 	public int getEndPosition(){
-		return offset+getLength();
+		return offset + getLength();
 	}
 	
 	@Override
 	public String toString() {
-		return isOpen ? "Open: " + name : "Close: " + name;
+		return (isOpen ? "Open: " + name : "Close: " + name);
 	}
 	
 	@Override

@@ -11,7 +11,7 @@ public class Status extends AbstractStatus {
 	
 	@Override
 	public int getStartPosition(){
-		return tag.getStartPosition()-1;
+		return tag.getStartPosition() - 1;
 	}
 	
 	@Override

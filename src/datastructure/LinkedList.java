@@ -30,7 +30,6 @@ public class LinkedList<T> implements Iterable<T> {
 	}
 	
 	/**
-	 * 
 	 * @return true if empty, false if the linked list contains elements
 	 */
 	public boolean isEmpty(){
@@ -38,7 +37,6 @@ public class LinkedList<T> implements Iterable<T> {
 	}
 	
 	/**
-	 * 
 	 * @return the number of elements (nodes) in the list
 	 */
 	public int getSize(){
@@ -46,25 +44,29 @@ public class LinkedList<T> implements Iterable<T> {
 	}
 	
 	/**
-	 * 
-	 * @return the head of the list
+	 * @return the head element of the list
 	 */
 	public T first(){
 		return head.getElement();
 	}
 	
 	/**
-	 * 
-	 * @return the tail of the list
+	 * @return the tail element of the list
 	 */
 	public T last(){
 		return tail.getElement();
 	}
 	
+	/**
+	 * @return the head node of the list
+	 */
 	public LinkedList<T>.ListNode<T> head(){
 		return this.head;
 	}
 	
+	/**
+	 * @return the tail node of the list
+	 */
 	public LinkedList<T>.ListNode<T> tail(){
 		return this.tail;
 	}
@@ -83,6 +85,7 @@ public class LinkedList<T> implements Iterable<T> {
 	 * Adds an element before a ListNode node
 	 * @param node
 	 * @param element
+	 * @return node that is added to the list
 	 */
 	public ListNode<T> addBefore(ListNode<T> node, T element){
 		ListNode<T> addedNode = new ListNode<T>(element);
@@ -98,6 +101,7 @@ public class LinkedList<T> implements Iterable<T> {
 	 * Adds an element after a ListNode node
 	 * @param node
 	 * @param element
+	 * @return node that is added to the list
 	 */
 	public ListNode<T> addAfter(ListNode<T> node, T element){
 		ListNode<T> addedNode = new ListNode<T>(element);
@@ -112,6 +116,7 @@ public class LinkedList<T> implements Iterable<T> {
 	/**
 	 * Adds an element to the linked list at the end of the list?
 	 * @param element
+	 * @return node that is added to the list
 	 */
 	public ListNode<T> add(T element){
 		ListNode<T> addedNode = new ListNode<T>(element);
@@ -142,7 +147,6 @@ public class LinkedList<T> implements Iterable<T> {
 	/**
 	 * ListNodes to construct the linked List with.
 	 * @author Theresa Bultinck
-	 *
 	 * @param <T>
 	 */
 
@@ -228,7 +232,6 @@ public class LinkedList<T> implements Iterable<T> {
 	/**
 	 * Constructs an iterator to iterate through the Linked List.
 	 * @author Theresa Bultinck
-	 *
 	 * @param <T>
 	 */
 	@SuppressWarnings("hiding")

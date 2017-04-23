@@ -3,7 +3,6 @@ package datastructure;
 /**
  * Constructs a tree that consists of TreeNodes of generic type T
  * @author Theresa Bultinck
- *
  * @param <T>
  */
 public class Tree<T> {
@@ -21,7 +20,7 @@ public class Tree<T> {
 	/**
 	 * After checked if there is a root in the tree, add a root if it returns false. If true don't add a root.
 	 * @param rootElement
-	 * @return TreeNode that is the root
+	 * @return the root of type TreeNode
 	 */
 	public TreeNode<T> setRoot(T rootElement) {
 		if(!hasRoot()) 
@@ -39,16 +38,15 @@ public class Tree<T> {
 
 	/**
 	 * Returns the root of the tree
-	 * @return TreeNode that is the root of the tree
+	 * @return the root of type TreeNode
 	 */
 	public TreeNode<T> getRoot(){
 		return root;
 	}
 	
 	/**
-	 * TreeNodes to construct the tree with.
+	 * Inner class TreeNode to construct the tree with.
 	 * @author Theresa Bultinck
-	 *
 	 * @param <T>
 	 */
 	@SuppressWarnings("hiding")
@@ -66,8 +64,7 @@ public class Tree<T> {
 		/**
 		 * Adds a child to a linked list of children
 		 * @param child 
-		 * @return true if a parent has been added and thus also a child and 
-		 * false if it failed to add a parent and thus no child
+		 * @return child that is added as a type of TreeNode
 		 */
 		public TreeNode<T> addChild(T child){
 			TreeNode<T> childNode = new TreeNode<>(child);
@@ -100,7 +97,7 @@ public class Tree<T> {
 		
 		/**
 		 * Returns the parent of a certain child
-		 * @return TreeNode that represents the parent
+		 * @return parent of the type TreeNode
 		 */
 		public TreeNode<T> getParent(){
 			return parent;

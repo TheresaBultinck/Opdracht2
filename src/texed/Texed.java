@@ -55,7 +55,6 @@ public class Texed extends JFrame implements DocumentListener, ActionListener {
 		
 		//undo-redo command stack
 		commands = new CommandStack();
-		
 		createMenu();
 		
 		//Registration of the callback

@@ -168,7 +168,7 @@ public class Texed extends JFrame implements DocumentListener, ActionListener {
 	}
 	
 	/**
-	 * Highlights the mistakes you made in the code you've typed. For example: if you forgot to close
+	 * Highlights the tag in which you made an error. For example: if you forgot to close
 	 * the body tag and already closed the html.
 	 * @param status
 	 * @throws BadLocationException

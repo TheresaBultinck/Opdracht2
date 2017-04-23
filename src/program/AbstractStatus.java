@@ -1,7 +1,7 @@
 package program;
 
 /**
- * Class that gives the position of the error 
+ * Class that gives the position of the error. (1 character)
  * @author Theresa Bultinck
  *
  */

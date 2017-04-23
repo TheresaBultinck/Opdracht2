@@ -1,5 +1,10 @@
 package program;
 
+/**
+ * Gives the error in a tag of a position in the tag.
+ * @author Theresa
+ *
+ */
 public class Status extends AbstractStatus {
 	
 	private Tag tag;
